@@ -133,6 +133,7 @@ export const en = {
   'help.describePlaceholder': 'Where is it? What happened?',
   'help.site': 'Where',
   'help.siteAny': 'Not sure',
+  'help.siteSmall': 'Few people work here, so a report without your name will not show this place to your employer.',
   'help.who': 'Who can see your name?',
   'help.named': 'My employer can see my name',
   'help.namedHint': 'They can call you to ask questions.',

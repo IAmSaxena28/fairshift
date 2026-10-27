@@ -498,14 +498,15 @@ fieldset {
   background: var(--primary);
   color: var(--primary-ink);
   font-weight: 800;
+  flex: none;
 }
 
 .brand-name {
   font-weight: 700;
 }
 
-.worker-header .brand,
-.worker-header .brand > div {
+.brand,
+.brand > div {
   min-width: 0;
 }
 

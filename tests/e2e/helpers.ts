@@ -3,7 +3,11 @@ import { expect, type Page } from '@playwright/test';
 
 export const PHONE = { width: 360, height: 740 };
 
+/** Signs in on a phone that has already been used in English, so earlier tests' saved account languages do not leak in. */
 export async function signInAs(page: Page, username: string) {
+  await page.addInitScript(() => {
+    if (!localStorage.getItem('fairshift.lang')) localStorage.setItem('fairshift.lang', 'en');
+  });
   await page.goto('/');
   await page.locator(`[data-username="${username}"]`).click();
   await expect(page.locator('main#main')).toBeVisible();

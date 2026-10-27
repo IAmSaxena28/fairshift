@@ -36,6 +36,9 @@ export function ReportForm({ orgCode, allowNamed, onSent }: { orgCode: string; a
   const [error, setError] = useState<ApiError | null>(null);
   const [result, setResult] = useState<{ code?: string } | null>(null);
 
+  // On a small site the employer console withholds the site of a confidential report; say so before sending.
+  const smallSite = mode === 'confidential' && !!org.data?.sites.find((s) => String(s.id) === siteId)?.small;
+
   if (org.error) return <Notice tone="danger" icon="alert">{t('report.notFound')}</Notice>;
 
   if (result) {
@@ -114,7 +117,12 @@ export function ReportForm({ orgCode, allowNamed, onSent }: { orgCode: string; a
           {org.data && (
             <div className="field">
               <label htmlFor="report-site">{t('help.site')}</label>
-              <select id="report-site" value={siteId} onChange={(e) => setSiteId(e.target.value)}>
+              <select
+                id="report-site"
+                value={siteId}
+                onChange={(e) => setSiteId(e.target.value)}
+                aria-describedby={smallSite ? 'report-site-hint' : undefined}
+              >
                 <option value="">{t('help.siteAny')}</option>
                 {org.data.sites.map((s) => (
                   <option key={s.id} value={s.id}>
@@ -122,6 +130,11 @@ export function ReportForm({ orgCode, allowNamed, onSent }: { orgCode: string; a
                   </option>
                 ))}
               </select>
+              {smallSite && (
+                <p className="hint" id="report-site-hint">
+                  {t('help.siteSmall')}
+                </p>
+              )}
             </div>
           )}
 

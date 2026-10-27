@@ -138,6 +138,7 @@ export const hi: Dictionary = {
   'help.describePlaceholder': 'कहाँ है? क्या हुआ?',
   'help.site': 'जगह',
   'help.siteAny': 'पता नहीं',
+  'help.siteSmall': 'यहाँ कम लोग काम करते हैं, इसलिए बिना नाम वाली शिकायत में यह जगह आपके नियोक्ता को नहीं दिखेगी।',
   'help.who': 'आपका नाम कौन देख सकता है?',
   'help.named': 'नियोक्ता मेरा नाम देख सकते हैं',
   'help.namedHint': 'वे सवाल पूछने के लिए आपको फ़ोन कर सकते हैं।',

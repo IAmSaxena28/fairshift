@@ -220,7 +220,6 @@ export function salaryDays(employedFrom: string, period: Period, today: string):
   return Math.max(0, daysBetween(from, until));
 }
 
-
 const COMPONENTS = ['basePaise', 'overtimePaise', 'nightAllowancePaise', 'adjustmentsPaise'] as const;
 
 /** Compares what the records suggest with what payroll recorded, component by component. */

@@ -32,10 +32,23 @@ export interface I18n {
 
 const Ctx = createContext<I18n | null>(null);
 
+/** True when this browser already has a language choice, which then wins over the account's saved one. */
+export function hasStoredLang(): boolean {
+  try {
+    return localStorage.getItem(STORAGE_KEY) !== null;
+  } catch {
+    return false;
+  }
+}
+
+export function isLang(value: unknown): value is Lang {
+  return value === 'en' || value === 'ta' || value === 'hi';
+}
+
 function initialLang(): Lang {
   try {
     const saved = localStorage.getItem(STORAGE_KEY);
-    if (saved === 'en' || saved === 'ta' || saved === 'hi') return saved;
+    if (isLang(saved)) return saved;
   } catch {
     // Storage can be unavailable (private mode); fall back to the browser language.
   }

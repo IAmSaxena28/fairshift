@@ -39,3 +39,25 @@ test('employer console pages pass axe', async ({ page }) => {
     await expectAccessible(page);
   }
 });
+
+test.describe('dark mode', () => {
+  test.use({ colorScheme: 'dark' });
+
+  test('worker and employer screens keep contrast in dark mode', async ({ page }) => {
+    await page.setViewportSize(PHONE);
+    await signInAs(page, 'ravi');
+    for (const tab of [null, 'Hours', 'Pay', 'Help']) {
+      if (tab) await page.getByRole('link', { name: tab, exact: true }).click();
+      await page.waitForLoadState('networkidle');
+      await expectAccessible(page);
+    }
+    await page.context().clearCookies();
+    await page.setViewportSize({ width: 1280, height: 900 });
+    await signInAs(page, 'lakshmi');
+    for (const name of ['Overview', 'Pay & time requests', 'Safety & grievances']) {
+      await page.getByRole('link', { name }).click();
+      await page.waitForLoadState('networkidle');
+      await expectAccessible(page);
+    }
+  });
+});

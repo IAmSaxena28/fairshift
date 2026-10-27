@@ -1,7 +1,9 @@
-import type { ReactNode } from 'react';
+import { useEffect, type ReactNode } from 'react';
+import { api } from '../../api.ts';
 import { Icon, type IconName } from '../../components/Icon.tsx';
 import { LanguageSwitch } from '../../components/ui.tsx';
-import { useI18n } from '../../i18n/i18n.tsx';
+import { hasStoredLang, isLang, useI18n } from '../../i18n/i18n.tsx';
+import type { Lang } from '../../../shared/types.ts';
 import { Link, match, useRouter } from '../../router.tsx';
 import type { Me } from '../../types.ts';
 import type { MessageKey } from '../../i18n/en.ts';
@@ -18,8 +20,18 @@ const TABS: Array<{ to: string; icon: IconName; label: MessageKey }> = [
 ];
 
 export function WorkerApp({ me, onSignOut }: { me: Me; onSignOut: () => void }) {
-  const { t } = useI18n();
+  const { t, setLang } = useI18n();
   const { path } = useRouter();
+
+  // On a new phone, start in the language the worker chose before. Afterwards each choice is saved to the account.
+  useEffect(() => {
+    if (!hasStoredLang() && isLang(me.user.lang)) setLang(me.user.lang);
+  }, [me.user.lang, setLang]);
+  const saveLang = (lang: Lang) => {
+    api.put('/api/me/preferences', { lang }).catch(() => {
+      // The choice still applies on this device; saving it to the account can wait for the next change.
+    });
+  };
 
   let page: ReactNode;
   let params: Record<string, string> | null;
@@ -49,7 +61,7 @@ export function WorkerApp({ me, onSignOut }: { me: Me; onSignOut: () => void }) 
           </div>
         </div>
         <div className="header-actions">
-          <LanguageSwitch />
+          <LanguageSwitch onChange={saveLang} />
           <button type="button" className="icon-btn" onClick={onSignOut} aria-label={t('common.signOut')}>
             <Icon name="logout" />
           </button>

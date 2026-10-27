@@ -1,6 +1,7 @@
 import { useEffect, useState, type ReactNode } from 'react';
 import { ApiError } from '../api.ts';
 import { LANGS, useI18n } from '../i18n/i18n.tsx';
+import type { Lang } from '../../shared/types.ts';
 import { Icon, type IconName } from './Icon.tsx';
 
 /** Loads data from `fetcher` and re-runs when `deps` change. `reload` refetches. */
@@ -76,7 +77,7 @@ export function Pill({ status, children }: { status: string; children: ReactNode
   return <span className={`pill pill-${PILL_TONE[status] ?? 'neutral'}`}>{children}</span>;
 }
 
-export function LanguageSwitch() {
+export function LanguageSwitch({ onChange }: { onChange?: (lang: Lang) => void }) {
   const { lang, setLang, t } = useI18n();
   return (
     <div className="lang-switch" role="group" aria-label={t('lang.label')}>
@@ -87,7 +88,10 @@ export function LanguageSwitch() {
           lang={l.code}
           aria-pressed={lang === l.code}
           className={lang === l.code ? 'active' : ''}
-          onClick={() => setLang(l.code)}
+          onClick={() => {
+            setLang(l.code);
+            onChange?.(l.code);
+          }}
         >
           {/* The visible short form stays inside the accessible name (WCAG 2.5.3). */}
           {l.short}

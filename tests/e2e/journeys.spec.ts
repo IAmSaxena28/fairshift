@@ -135,4 +135,28 @@ test.describe('Journey C: inclusive worker experience', () => {
     await page.keyboard.press('Enter');
     await expect(page.getByTestId('tracking-code')).toBeVisible();
   });
+
+  test('the confidential form warns before naming a small site', async ({ page }) => {
+    await page.goto('/report/GREENFIELD');
+    await page.getByRole('radio', { name: 'Broken equipment' }).check();
+    const site = page.getByLabel('Where');
+    await site.selectOption({ label: 'Maintenance' });
+    await expect(site).toHaveAccessibleDescription(/Few people work here/);
+    await site.selectOption({ label: 'Security' });
+    await expect(page.getByText(/Few people work here/)).toHaveCount(0);
+  });
+
+  test('the chosen language follows the worker to a new phone', async ({ browser }) => {
+    const first = await browser.newPage();
+    await signInAs(first, 'priya');
+    await first.getByRole('button', { name: 'தமிழ்' }).click();
+    await expect(first.locator('html')).toHaveAttribute('lang', 'ta');
+    await first.close();
+
+    const second = await browser.newPage(); // fresh storage, like a new phone
+    await second.goto('/');
+    await second.locator('[data-username="priya"]').click();
+    await expect(second.locator('html')).toHaveAttribute('lang', 'ta');
+    await second.close();
+  });
 });
