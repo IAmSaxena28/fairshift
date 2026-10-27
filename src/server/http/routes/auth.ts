@@ -16,7 +16,9 @@ export function authRoutes(db: Db, opts: { secret: string; now: () => number; se
   const r = Router();
   const loginLimiter = new RateLimiter(10, 60_000);
 
-  r.post('/auth/login', rateLimit(loginLimiter, opts.now), (req, res) => {
+  // Limited per client and username, so one busy shared device (a site office tablet) does not lock everyone out.
+  const loginScope = (req: { body?: { username?: unknown } }) => String(req.body?.username ?? '').toLowerCase().slice(0, 64);
+  r.post('/auth/login', rateLimit(loginLimiter, opts.now, loginScope), (req, res) => {
     const body = parse(LoginBody, req.body);
     const row = one<{ id: number; org_id: number; role: Role; password_hash: string }>(
       db,

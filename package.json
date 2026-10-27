@@ -6,7 +6,7 @@
   "license": "MIT",
   "type": "module",
   "engines": {
-    "node": ">=22.5"
+    "node": ">=22.12"
   },
   "scripts": {
     "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:web\"",
@@ -38,6 +38,9 @@
     "supertest": "^7.3.1",
     "typescript": "^5.9.3",
     "vite": "^6.4.5",
-    "vitest": "^3.2.7"
+    "vitest": "^5.0.5"
+  },
+  "overrides": {
+    "playwright-core": "1.63.0"
   }
 }

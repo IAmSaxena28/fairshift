@@ -22,7 +22,9 @@ export function createApp(opts: AppOptions) {
   const now = opts.now ?? Date.now;
   const app = express();
   app.disable('x-powered-by');
-  app.set('trust proxy', true);
+  // Cloud Run puts exactly one Google front end in front of the container; trusting more would let
+  // a client pick its own IP through X-Forwarded-For and dodge the rate limits.
+  app.set('trust proxy', 1);
   app.use(securityHeaders);
   app.use('/api', express.json({ limit: '32kb' }), requireJson);
   app.get('/api/health', (_req, res) => {
