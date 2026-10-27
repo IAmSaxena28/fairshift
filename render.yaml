@@ -1,0 +1,10 @@
+# One-click deploy on Render (alternative to Cloud Run). Uses the same Dockerfile.
+services:
+  - type: web
+    name: fairshift
+    runtime: docker
+    plan: free
+    healthCheckPath: /api/health
+    envVars:
+      - key: SESSION_SECRET
+        generateValue: true
