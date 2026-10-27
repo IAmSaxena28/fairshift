@@ -10,6 +10,8 @@ FairShift is a web platform for workplaces with many hourly and shift workers, s
 
 It was built for Prompt Wars 2026 against **UN Sustainable Development Goal 8: decent work and economic growth** (targets 8.5 and 8.8). See [docs/SDG_IMPACT.md](docs/SDG_IMPACT.md).
 
+**Live demo: https://fairshift-0hxi.onrender.com** (free hosting: the first visit after a quiet spell can take up to a minute while the server wakes, and the demo data starts fresh each time).
+
 > All people, organisations, places and incidents in the demo are fictional. Pay rules are demo values set by a fictional employer, not legal advice.
 
 <p>
@@ -144,7 +146,13 @@ npm run test:e2e     # 19 browser tests with axe-core (Playwright, Chromium)
 
 GitHub Actions runs all of these on every push ([.github/workflows/ci.yml](.github/workflows/ci.yml)).
 
-## Deploy to Google Cloud Run
+## Deploy
+
+### Render (used for the live demo)
+
+[render.yaml](render.yaml) is a Render Blueprint: in the Render dashboard choose **New Blueprint Instance**, pick this repository and apply. It builds the same Dockerfile and generates `SESSION_SECRET` for you.
+
+### Google Cloud Run
 
 The [Dockerfile](Dockerfile) builds the client and server, then runs production dependencies only as the unprivileged `node` user.
 
