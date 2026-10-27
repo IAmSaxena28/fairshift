@@ -1,0 +1,43 @@
+{
+  "name": "fairshift",
+  "version": "1.0.0",
+  "private": true,
+  "description": "FairShift: explainable pay, safe reporting and accountable action for employee-intensive organisations (SDG 8).",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=22.5"
+  },
+  "scripts": {
+    "dev": "concurrently -k \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "node --disable-warning=ExperimentalWarning --watch --experimental-strip-types src/server/index.ts",
+    "dev:web": "vite",
+    "build": "vite build && tsc -p tsconfig.server.json",
+    "start": "node --disable-warning=ExperimentalWarning dist/server/server/index.js",
+    "typecheck": "tsc -p tsconfig.json --noEmit && tsc -p tsconfig.server.json --noEmit",
+    "test": "vitest run",
+    "test:e2e": "playwright test",
+    "seed:check": "node --disable-warning=ExperimentalWarning --experimental-strip-types scripts/seed-check.ts"
+  },
+  "dependencies": {
+    "express": "^5.3.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.14.0",
+    "@playwright/test": "^1.63.0",
+    "@types/express": "^5.0.6",
+    "@types/node": "^22.20.5",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "@types/supertest": "^7.2.1",
+    "@vitejs/plugin-react": "^4.7.0",
+    "concurrently": "^10.0.6",
+    "supertest": "^7.3.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.5",
+    "vitest": "^3.2.7"
+  }
+}
